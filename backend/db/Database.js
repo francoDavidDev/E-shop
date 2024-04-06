@@ -11,3 +11,16 @@ const connectDatabase = () => {
 };
 
 module.exports = connectDatabase
+
+/*
+useNewUrlParser: true y useUnifiedTopology: true. 
+Estas opciones son necesarias para evitar advertencias de deprecación 
+y para asegurar una conexión estable.
+
+
+
+useNewUrlParser: true and useUnifiedTopology: true.
+These options are necessary to avoid deprecation warnings
+and to ensure a stable connection.
+
+*/

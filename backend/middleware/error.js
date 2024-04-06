@@ -1,6 +1,6 @@
 const ErrorHandler = require("../utils/ErrorHandler");
 
-module.export = (err, req, res, next) => {
+module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.message = err.message || "Internal server Error";
 
@@ -33,3 +33,8 @@ module.export = (err, req, res, next) => {
     message: err.message
   })
 };
+   
+
+/*error.js: Este archivo es un middleware de manejo de errores
+ que proporciona una forma estructurada de manejar diferentes 
+ tipos de errores que pueden ocurrir en una aplicación Express. */

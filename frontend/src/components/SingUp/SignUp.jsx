@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 // import REACT-ICONS
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import  {RxAvatar} from  "react-icons/rx";
+import { RxAvatar } from "react-icons/rx";
 // import syles custom
 import styles from "../../styles/styles";
 // React router dom
 import { Link } from "react-router-dom";
+//import axios
+import axios from "axios";
+//import server
+import { server } from "../../server";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -14,15 +18,31 @@ const SignUp = () => {
   const [visible, setVisible] = useState(false);
   const [avatar, setAvatar] = useState(null);
 
-  const handleSubmit =()=>{
-    console.log('ffff')
-  }
-
-  const handleFileInputChange =(e)=>{
+  const handleFileInputChange = (e) => {
     const file = e.target.files[0];
-    setAvatar(file)
-  }
+    setAvatar(file);
+  };
 
+  const handleSubmit = async (e) => {
+    console.log("entra al ala funcion");
+    e.preventDefault();
+    const config = { headers: { "Content-Type": "multipart/form-data" } };
+    const newForm = new FormData();
+    newForm.append("file", avatar);
+    newForm.append("name", name);
+    newForm.append("email", email);
+    newForm.append("password", password);
+
+    axios
+      .post(`${server}/user/create-user`, newForm, config)
+      .then((res) => {
+        console.log("entra al axios");
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 ">
@@ -33,7 +53,7 @@ const SignUp = () => {
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md  ">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 ">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             {/*full name  - nombre completo */}
             <div>
               <label
@@ -140,14 +160,29 @@ const SignUp = () => {
               ></label>
               <div className="mt-2 flex items-center ">
                 <span className="inline-block h-8 w-8 rounded-full overflow-hidden ">
-                    {avatar 
-                    ? (<img src={URL.createObjectURL(avatar)} alt="avatar" className="h-full w-full object-cover rounded-full " />)
-                    :(  <RxAvatar  className='w-8 h-8' /> )
-                }
+                  {avatar ? (
+                    <img
+                      src={URL.createObjectURL(avatar)}
+                      alt="avatar"
+                      className="h-full w-full object-cover rounded-full "
+                    />
+                  ) : (
+                    <RxAvatar className="w-8 h-8" />
+                  )}
                 </span>
-                <label htmlFor="file-input"  className="ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-xl shadow-sm text-sm font-medium text-gray text-gray-700 bg-white hover:bg-gray-50 ">
-                        <span>Upload a file</span>
-                        <input type="file" name="avatar" id="file-input" accept=".jpg,.jpeg,.png"  onChange={handleFileInputChange} className="sr-only "/>
+                <label
+                  htmlFor="file-input"
+                  className="ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-xl shadow-sm text-sm font-medium text-gray text-gray-700 bg-white hover:bg-gray-50 "
+                >
+                  <span>Upload a file</span>
+                  <input
+                    type="file"
+                    name="avatar"
+                    id="file-input"
+                    accept=".jpg,.jpeg,.png"
+                    onChange={handleFileInputChange}
+                    className="sr-only "
+                  />
                 </label>
               </div>
             </div>
